@@ -54,8 +54,10 @@ void Dec2RadixI(int decValue, int radValue) {
 
     for (int i = msb; i >= 0; i--) {
         q = (decValue / (pow(radValue, i))); // Find quotient for given power 
+        //printf("The integer result of the working number divided by %d to the power %d is %d\n", radValue, i, q);
         output[msb - i] = dic[q]; // Convert quotient to character representation from dic add msb -1 
         decValue -= (q * pow(radValue, i)); // Reduce decValue for next loop
+        //printf("The remainder is %d\n", decValue);
     }
 
     printf("The radix-%d value is %s\n", radValue, output);

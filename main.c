@@ -46,20 +46,19 @@ void Dec2RadixI(int decValue, int radValue) {
     int q, msb;
     float n; 
 
-    n = log(decValue + 1)/log(radValue); // Find log_radix(decimal value) from input and base
+    n = log(decValue + 1)/log(radValue); // find log_radix(decimal value) from input and base
     msb = ceil(n - 1); // round up and subtract 1 to find most significant bit (msb)
     char output[msb + 1]; // set up output string for converted number
     
     printf("The log%d of the number is %.2f\n", radValue, n);
 
     for (int i = msb; i >= 0; i--) {
-        q = (decValue / (pow(radValue, i))); // Find quotient for given power 
-        //printf("The integer result of the working number divided by %d to the power %d is %d\n", radValue, i, q);
-        output[msb - i] = dic[q]; // Convert quotient to character representation from dic add msb -1 
-        decValue -= (q * pow(radValue, i)); // Reduce decValue for next loop
-        //printf("The remainder is %d\n", decValue);
+        q = (decValue / (pow(radValue, i))); // find quotient for given power 
+        printf("The integer result of the number divided by %d to the power %d is %d\n", radValue, i, q);
+        output[msb - i] = dic[q]; // convert quotient to character representation from dic add msb -1 
+        decValue -= (q * pow(radValue, i)); // reduce decValue for next loop
+        printf("The remainder is %d\n", decValue);
     }
 
     printf("The radix-%d value is %s\n", radValue, output);
-
 }

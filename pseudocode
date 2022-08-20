@@ -1,0 +1,19 @@
+Input: Input = Decimal number, Radix = Desired radix
+Output: outputString = Decimal input in radix_i format
+
+charArray = ['1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'] // Characters to use for output
+MSB = roundup(log_Radix(Input + 1)) - 1 // Find most significant bit (MSB) based on decimal input
+
+i = MSB, di = Input, qi = 0 // initialize loop variables
+outputString[MSB + 1] // create output string MSB + 1 characters long
+
+while (i > 0, i--) do
+    qi = integer(di / Radix^(i)) // find integer result of division by radix raised to the power of i for that loop
+    outputString[i] = charArray[q] // append to the output string the character from the charArray corresponding to that integer
+
+    di = di - qi*(Radix^(i)) // find remainder after subtracting the highest power of the radix that fits the current decimal value, to be used
+                             // for the input into the next loop
+end
+
+print(outputString) // print converted output
+    

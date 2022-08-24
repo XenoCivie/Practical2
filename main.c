@@ -31,6 +31,11 @@ int main(void) {
 
         printf("Enter a radix for the converter between 2 and 16: ");
         scanf("%d", &radix);
+
+        while (-1*(radix - 2)*(radix - 16) < 0) {
+            printf("That radix isn't between 2 and 16 you silly goose, please enter a valid radix:\n");
+            scanf("%d", &radix);
+        }
         printf("The radix you have entered is %d\n", radix);
 
         Dec2RadixI(input, radix);
@@ -46,11 +51,10 @@ void Dec2RadixI(int decValue, int radValue) {
     int q, msb;
     float n; 
 
-    n = log(decValue + 1)/log(radValue); // find log_radix(decimal value) from input and base
-    msb = ceil(n - 1); // round up and subtract 1 to find most significant bit (msb)
+    msb = ceil(log2(decValue + 1)/log2(radValue) - 1);  // find most significant bit from decimal input and radix
     char output[msb + 1]; // set up output string for converted number
     
-    printf("The log%d of the number is %.2f\n", radValue, n);
+    printf("The most significant bit (for base %d) for the number is %.2f\n", radValue, msb); // Printing MSB as use a char array of that length rather than log2(decValue)
 
     for (int i = msb; i >= 0; i--) {
         q = (decValue / (pow(radValue, i))); // find quotient for given power 
@@ -58,7 +62,13 @@ void Dec2RadixI(int decValue, int radValue) {
         output[msb - i] = dic[q]; // convert quotient to character representation from dic add msb -1 
         decValue -= (q * pow(radValue, i)); // reduce decValue for next loop
         printf("The remainder is %d\n", decValue);
-    }
 
+        if ((decValue == 0)&&(i != 0)) { // in the case that the remainder is zero, fill array with zeroes and exit loop
+            for (int n = (i-1); n >= 0; n--) {
+                output[msb - n] = '0';
+            }
+        break;
+        }
+    }
     printf("The radix-%d value is %s\n", radValue, output);
 }

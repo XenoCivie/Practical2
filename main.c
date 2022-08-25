@@ -10,8 +10,7 @@
 void Dec2RadixI(int decValue, int radValue);
 
 int main(void) {
-    int radix, q, n;
-    int input = 1;
+    int radix, input;
 
     printf("*****************************\n");
     printf("%s\n", TITLE);
@@ -23,7 +22,8 @@ int main(void) {
         printf("Enter a decimal number: ");
         scanf("%d", &input);
 
-        if (input <= 0) {
+        if (input < 0) {
+            printf("EXIT");
             break;
         }
 
@@ -41,34 +41,43 @@ int main(void) {
         Dec2RadixI(input, radix);
 
     }
-
-    printf("EXIT");
-
 }
 
 void Dec2RadixI(int decValue, int radValue) {
     const char dic[16] = {'0', '1','2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};  
-    int q, msb;
+    int q, r, i = 0, out_len;
     float n; 
 
-    msb = ceil(log2(decValue + 1)/log2(radValue) - 1);  // find most significant bit from decimal input and radix
-    char output[msb + 1]; // set up output string for converted number
-    
-    printf("The most significant bit (for base %d) for the number is %.2f\n", radValue, msb); // Printing MSB as use a char array of that length rather than log2(decValue)
-
-    for (int i = msb; i >= 0; i--) {
-        q = (decValue / (pow(radValue, i))); // find quotient for given power 
-        printf("The integer result of the number divided by %d to the power %d is %d\n", radValue, i, q);
-        output[msb - i] = dic[q]; // convert quotient to character representation from dic add msb -1 
-        decValue -= (q * pow(radValue, i)); // reduce decValue for next loop
-        printf("The remainder is %d\n", decValue);
-
-        if ((decValue == 0)&&(i != 0)) { // in the case that the remainder is zero, fill array with zeroes and exit loop
-            for (int n = (i-1); n >= 0; n--) {
-                output[msb - n] = '0';
-            }
-        break;
-        }
+    if (decValue == 0) { // Checks if decValue is 0 
+        printf("The log2 of the number is -inf\n");
+        printf("The integer result of the number divided by %d is 0\n", radValue);
+        printf("The radix-%d value is 0\n", radValue);
     }
-    printf("The radix-%d value is %s\n", radValue, output);
+
+    else { // If decValue != 0, run converstion to radix-n
+        n = log2(decValue); 
+        out_len = ceil(n) + 1;
+        char output[out_len]; 
+    
+        printf("The log2 of the number is %.2f\n", n);
+
+        while (decValue > 0) {
+
+            q = (decValue/radValue); // Find integer result of decValue/radValue
+            printf("The integer result of the number divided by %d is %d\n", radValue, q);
+            r = decValue - q*radValue; // Find remainder after division
+            printf("The remainder is %d\n", r);
+
+            output[i] = dic[r]; // Attach character to output string
+            decValue = q;
+
+            i++;
+        }
+
+        printf("The radix-%d value is ", radValue); // Code for printing string - printf("%s") had strange issues 
+        for (int j = 1; j <= i; j++) {
+            printf("%c", output[i - j]);
+        }
+        printf("\n");
+    }
 }
